@@ -13,15 +13,21 @@ public class StateDFA extends State{
     Transition transition;
     
     StateDFA(String name, Transition t){
+        
         super(name);
         transition = t;
+    
     }
     
     StateDFA(String name){
+        
         super(name);
+    
     }
     
     void setTransition(Transition t){
+        
         transition = t;
+    
     }
 }

@@ -15,11 +15,15 @@ public class StateNFA extends State{
     ArrayList<Transition> transitions;
     
     StateNFA(String name){
+        
         super(name);
         transitions = new ArrayList<>();
+    
     }
     
     public void addTransition(Transition t){
+        
         transitions.add(t);
+    
     }
 }

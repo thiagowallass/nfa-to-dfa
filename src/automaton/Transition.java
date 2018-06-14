@@ -15,19 +15,25 @@ public class Transition {
     boolean alreadyPassed; 
     
     Transition(String letter, State next){
+        
         this.letter = letter;
         this.next = next;
         alreadyPassed = false;
+    
     }
     
     Transition(String letter, String next){ //Caso o estado ainda não tenha sido criado
+        
         this.letter = letter;
         this.next = new State(next);
         alreadyPassed = false;
+    
     }
     
     void alreadyPassed(){
+        
         if(!alreadyPassed)
             alreadyPassed = true;
+    
     }
 }
