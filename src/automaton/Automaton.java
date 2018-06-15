@@ -88,6 +88,11 @@ public class Automaton {
             //Read a row
             String row = readFile.readLine();
 
+            String[] parts = row.split(" ");
+            
+            System.out.println(parts[0]);
+            System.out.println(parts[1]);
+            
             //With this loop we read a line 'til it's "\n"
             while (row != null){
                 
