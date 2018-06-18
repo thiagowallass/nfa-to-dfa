@@ -16,14 +16,24 @@ import java.util.Scanner;
  * @author thiag
  */
 public class Automaton {
-
+    
     ArrayList<String> alphabet;
-    ArrayList programFunction;
+    ArrayList<State> programFunction;
+    ArrayList<State> last;
+    State initial;
     
     Automaton(){
         
         alphabet = new ArrayList<>();
         programFunction = new ArrayList<>();
+        last = new ArrayList<>();
+    
+    }
+    
+    void addInitialState(State state){
+        
+        initial = state;
+        addState(state);
     
     }
     
@@ -35,11 +45,19 @@ public class Automaton {
     
     void addState(State state){
         
-        programFunction.add(state);
-    
+        State exist = findStateInProgramFunction(state.name);  //Verify if the state is already in program function
+        
+        if(exist == null){  //If it is not
+          
+            programFunction.add(state);  //Add state to program function
+        
+        }
     }
     
-    void addLastState(State state){
+    void addFinalState(State state){
+        
+        last.add(state);
+        addState(state);
         
     }
     
@@ -57,9 +75,7 @@ public class Automaton {
     
     State findStateInProgramFunction(String name){
         
-        for(Object object: programFunction){
-            
-            State state = (State) object;
+        for(State state: programFunction){
             
             if(state.name.equals(name))
                 
@@ -69,9 +85,59 @@ public class Automaton {
         return null;
     }
     
+    boolean isInProgramFunction(String name){
+        
+        State exist = findStateInProgramFunction(name);     //Look in program function
+        
+        if(exist != null)   //If didn't find
+        
+            return true;
+        
+        else                //If found it
+        
+            return false;
+    
+    }
+    
+    @Override
+    public String toString(){
+        
+        String back = "";
+        
+        back += "Alphabet: ";
+        
+        for(String letter: alphabet)
+            back += letter + " ";
+        
+        back += "\n";
+        
+        back += "Initial state: " + initial.name;
+        
+        back += "\n";
+        
+        back += "Final(s) states: ";
+        
+        for(State finals: last)
+            back += finals.name + " ";
+        
+        back += "\n";
+        
+        for(State state: programFunction){
+            
+            for(Transition t: state.transitions){
+                
+                back += state.name + " " + t.letter + " " + t.next.name + "\n";
+            
+            }
+        }
+        
+        return back;
+    }
+    
     public static void main(String[] args) {
         //Read file and build object AFN
         
+        /*
         Scanner input = new Scanner(System.in);
         
         //Read file's name
@@ -113,34 +179,34 @@ public class Automaton {
         }
         
         System.out.println("");
-        
+        */
         NFA nfa = new NFA();
         DFA dfa;
-        StateNFA state;
+        State state;
         
         //Setting alphabet
         nfa.addLetterAlphabet("a");
         nfa.addLetterAlphabet("b");
         
         //Setting states of AFN
-        nfa.addInitialState(new StateNFA("q0"));
-        nfa.addState(new StateNFA("q1"));
-        nfa.addLastState(new StateNFA("q2"));
+        nfa.addInitialState(new State("q0"));
+        nfa.addState(new State("q1"));
+        nfa.addFinalState(new State("q2"));
         
         //Adding transitions to states
         //To state q0
-        state = (StateNFA)nfa.findStateInProgramFunction("q0");
+        state = nfa.findStateInProgramFunction("q0");
         state.addTransition(new Transition("a", nfa.findStateInProgramFunction("q0")));
         state.addTransition(new Transition("a", nfa.findStateInProgramFunction("q1")));
         state.addTransition(new Transition("b", nfa.findStateInProgramFunction("q0")));
         
         //To state q1
-        state = (StateNFA)nfa.findStateInProgramFunction("q1");
+        state = nfa.findStateInProgramFunction("q1");
         state.addTransition(new Transition("b", nfa.findStateInProgramFunction("q2")));
         
         //Call function nfa.convertToDFA()
         System.out.println(nfa);
-        dfa = nfa.convertToAFD();
+        dfa = nfa.convertToDFA();
         System.out.println("");
         System.out.println(dfa);
         

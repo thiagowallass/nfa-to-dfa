@@ -11,29 +11,13 @@ package automaton;
  */
 public class Transition {
     String letter;
-    State next;
-    boolean alreadyPassed; 
+    State next; 
     
     Transition(String letter, State next){
         
         this.letter = letter;
         this.next = next;
-        alreadyPassed = false;
-    
-    }
-    
-    Transition(String letter, String next){ //Caso o estado ainda não tenha sido criado
         
-        this.letter = letter;
-        this.next = new State(next);
-        alreadyPassed = false;
-    
     }
     
-    void alreadyPassed(){
-        
-        if(!alreadyPassed)
-            alreadyPassed = true;
-    
-    }
 }
