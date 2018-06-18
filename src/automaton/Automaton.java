@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 /**
@@ -136,9 +138,10 @@ public class Automaton {
     
     public static void main(String[] args) {
         //Read file and build object AFN
-        
-        /*
+
         Scanner input = new Scanner(System.in);
+        
+        NFA nfa = new NFA();
         
         //Read file's name
         System.out.println("Insert the file's name: ");
@@ -154,15 +157,50 @@ public class Automaton {
             //Read a row
             String row = readFile.readLine();
 
-            String[] parts = row.split(" ");
+            String[] alphabet = row.split(" ");
             
-            System.out.println(parts[0]);
-            System.out.println(parts[1]);
+            for(String letter : alphabet){
+                nfa.addLetterAlphabet(letter);
+            }
             
+            row = readFile.readLine();
+            nfa.addInitialState(new State(row));
+            
+            row = readFile.readLine();
+            String[] finalStates = row.split(" ");
+            
+            for(String state : finalStates){
+                nfa.addFinalState(new State(state));
+            }
+            
+            row = readFile.readLine();
+            State state1;
+            State state2;
             //With this loop we read a line 'til it's "\n"
             while (row != null){
                 
-                System.out.printf("%s\n", row);
+                String[] part = row.split(" ");
+                
+                state1 = nfa.findStateInProgramFunction(part[0]);
+                state2 = nfa.findStateInProgramFunction(part[2]);
+        
+                if (state1 == null){ 
+                    nfa.addState(new State(part[0]));
+                    state1 = nfa.findStateInProgramFunction(part[0]);
+                }
+
+                if (state2 == null){
+                    if(part[0] == part[2]){
+                        state2 = state1;
+                    }else{
+                        nfa.addState(new State(part[2]));
+                        state2 = nfa.findStateInProgramFunction(part[2]);
+                    }
+
+                }
+        
+                state1.addTransition(new Transition(part[1], state2));
+        
                 
                 //To read all file
                 row = readFile.readLine();
@@ -179,7 +217,12 @@ public class Automaton {
         }
         
         System.out.println("");
-        */
+
+        
+        DFA dfa;
+        State state;
+        
+        /*
         NFA nfa = new NFA();
         DFA dfa;
         State state;
@@ -203,7 +246,8 @@ public class Automaton {
         //To state q1
         state = nfa.findStateInProgramFunction("q1");
         state.addTransition(new Transition("b", nfa.findStateInProgramFunction("q2")));
-        
+        */
+
         //Call function nfa.convertToDFA()
         System.out.println(nfa);
         dfa = nfa.convertToDFA();
@@ -211,6 +255,12 @@ public class Automaton {
         System.out.println(dfa);
         
         //dfa.outputFile()
+        
+//        FileWriter arq = new FileWriter("/home/vitorfranca/git/nfa-to-dfa/src/DFA.txt");
+//        PrintWriter gravarArq = new PrintWriter(arq);
+//        
+//        gravarArq.printf("+--Result DFA--+%n");
+        
     }
 
 }
