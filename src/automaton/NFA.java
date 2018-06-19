@@ -4,9 +4,6 @@
  * and open the template in the editor.
  */
 package automaton;
-
-import java.util.ArrayList;
-
 /**
  *
  * @author thiag
@@ -43,32 +40,37 @@ public class NFA extends Automaton{
 
                 String name = stateComponents(state, letter);   //Find the next dfa state
 
-                State newState = dfa.findStateInProgramFunction(name);
+                if(!name.equals("")){
+                
+                    State newState = dfa.findStateInProgramFunction(name);
 
-                if(newState == null){                           //If the state isn't in program function
+                    if(newState == null){                           //If the state isn't in program function
 
-                    newState = new State(name);
+                        newState = new State(name);
 
-                    for(State finalState: last){                //Look if the new state has in his name the name of some final state of nfa
+                        for(State finalState: last){                //Look if the new state has in his name the name of some final state of nfa
 
-                        if(newState.name.contains(finalState.name)){
+                            if(newState.name.contains(finalState.name)){
 
-                            dfa.addFinalState(newState);
+                                dfa.addFinalState(newState);
+
+                            }
 
                         }
 
+                        dfa.addState(newState);         //Add the new state to dfa
+
                     }
 
-                    dfa.addState(newState);         //Add the new state to dfa
+                    state.addTransition(new Transition(letter, newState));
+                
 
-                }
+                    if(newState.transitions.isEmpty()){
 
-                state.addTransition(new Transition(letter, newState));
+                        newStates(dfa, newState);
 
-                if(newState.transitions.isEmpty()){
-                 
-                    newStates(dfa, newState);
-
+                    }
+                
                 }
 
             }
