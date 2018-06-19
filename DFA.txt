@@ -1,0 +1,8 @@
+Alphabet: a b 
+Initial state: q0
+Final(s) states: q2q3 q3 
+q0 a q1
+q1 a q2q3
+q1 b q2
+q2q3 b q3
+q2 b q3

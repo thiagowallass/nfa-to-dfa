@@ -7,10 +7,10 @@ package automaton;
 
 import java.util.ArrayList;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.FileOutputStream;
 import java.util.Scanner;
 
 /**
@@ -136,7 +136,7 @@ public class Automaton {
         return back;
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         //Read file and build object AFN
 
         Scanner input = new Scanner(System.in);
@@ -148,7 +148,7 @@ public class Automaton {
         String nameFile = input.nextLine();
         
         //Printing the file's content
-        System.out.println("\nFile's content: \n");
+        System.out.println("\nFile's content: ");
         try{
             
             FileReader file = new FileReader(nameFile);
@@ -217,12 +217,11 @@ public class Automaton {
         }
         
         System.out.println("");
-
-        
-        DFA dfa;
-        State state;
         
         /*
+        
+        Old way to recieve the NFA
+        
         NFA nfa = new NFA();
         DFA dfa;
         State state;
@@ -248,6 +247,9 @@ public class Automaton {
         state.addTransition(new Transition("b", nfa.findStateInProgramFunction("q2")));
         */
 
+        DFA dfa;
+        State state;
+        
         //Call function nfa.convertToDFA()
         System.out.println(nfa);
         dfa = nfa.convertToDFA();
@@ -256,10 +258,17 @@ public class Automaton {
         
         //dfa.outputFile()
         
-//        FileWriter arq = new FileWriter("/home/vitorfranca/git/nfa-to-dfa/src/DFA.txt");
-//        PrintWriter gravarArq = new PrintWriter(arq);
-//        
-//        gravarArq.printf("+--Result DFA--+%n");
+        try {
+            
+            FileOutputStream output = new FileOutputStream(new File("DFA.txt"));
+            byte[] b = dfa.toString().getBytes();
+            output.write(b);
+            
+        } catch(Exception e){
+            
+            System.err.printf("An error occurred creating the file. %s.\n", e.getMessage());
+            
+        }
         
     }
 
