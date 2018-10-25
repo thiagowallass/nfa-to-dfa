@@ -255,9 +255,13 @@ public class Automaton {
         dfa = nfa.convertToDFA();
         System.out.println("");
         System.out.println(dfa);
+
         
-        //dfa.outputFile()
-        
+        /*
+         * Tries to create an output file
+         * if it's successful, then write in file
+         * if an error occurred, throws an exception
+         */
         try {
             
             FileOutputStream output = new FileOutputStream(new File("DFA.txt"));
